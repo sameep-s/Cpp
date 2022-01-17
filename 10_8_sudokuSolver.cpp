@@ -28,7 +28,7 @@ bool solveSudoku(vector<vector<int>> mat, int i, int j, int n)
 
     // recursive cases
 
-    // if an element is already there
+    // if an element is already there.
     if (mat[i][j] != 0)
     {
         solveSudoku(mat, i, j + 1, n);
