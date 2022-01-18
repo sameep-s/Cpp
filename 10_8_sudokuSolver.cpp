@@ -84,11 +84,13 @@ bool solveSudoku(vector<vector<int>> &mat, int i, int j, int n)
             {
                 return true;
             }
+
+            // backtracking
+            mat[i][j] = 0;
         }
     }
 
-    // if no option works (backtracking)
-    mat[i][j] = 0;
+    // if no option works return false.
     return false;
 }
 
