@@ -81,6 +81,7 @@ void printPath(int m[MAX][MAX], int n)
     printPathUtil(0, 0, m, n, path,
                   possiblePaths, visited);
 
+    // printing once answers are received
     for (int i = 0; i < possiblePaths.size(); i++)
         cout << possiblePaths[i] << " ";
 }
