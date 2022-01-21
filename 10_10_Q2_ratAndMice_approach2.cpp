@@ -7,7 +7,7 @@ using namespace std;
 bool isSafe(int i, int j, int n, vector<vector<int>> m, bool visited[][M])
 {
     // the condition
-    if (i == n || j == n || i < 0 || j < 0 || m[i][j] == 0 || visited[i][j])
+    if (i < 0 || i == n || i < 0 || j == n || visited[i][j] || m[i][j] == 0)
     {
         return false;
     }
@@ -19,7 +19,7 @@ bool isSafe(int i, int j, int n, vector<vector<int>> m, bool visited[][M])
 void printPathUtil(int i, int j, vector<vector<int>> m, int n, vector<string> &possiblePaths, string &path, bool visited[M][M])
 {
     // base case
-    if (i == n || j == n || i < 0 || j < 0 || visited[i][j] || m[i][j] == 0)
+    if (i == n || j == n || i == -1 || j == -1 || visited[i][j] || m[i][j] == 0)
     {
         return;
     }
@@ -36,6 +36,8 @@ void printPathUtil(int i, int j, vector<vector<int>> m, int n, vector<string> &p
     // down
     if (isSafe(i + 1, j, n, m, visited))
     {
+        cout << "D" << endl;
+
         path.push_back('D');
         printPathUtil(i + 1, j, m, n, possiblePaths, path, visited);
         path.pop_back();
@@ -45,6 +47,8 @@ void printPathUtil(int i, int j, vector<vector<int>> m, int n, vector<string> &p
 
     if (isSafe(i, j - 1, n, m, visited))
     {
+        cout << "L" << endl;
+
         path.push_back('L');
         printPathUtil(i, j - 1, m, n, possiblePaths, path, visited);
         path.pop_back();
@@ -53,6 +57,8 @@ void printPathUtil(int i, int j, vector<vector<int>> m, int n, vector<string> &p
 
     if (isSafe(i, j + 1, n, m, visited))
     {
+        cout << "R" << endl;
+
         path.push_back('R');
         printPathUtil(i, j + 1, m, n, possiblePaths, path, visited);
         path.pop_back();
@@ -61,6 +67,8 @@ void printPathUtil(int i, int j, vector<vector<int>> m, int n, vector<string> &p
 
     if (isSafe(i - 1, j, n, m, visited))
     {
+        cout << "U" << endl;
+
         path.push_back('U');
         printPathUtil(i - 1, j, m, n, possiblePaths, path, visited);
         path.pop_back();
@@ -68,7 +76,6 @@ void printPathUtil(int i, int j, vector<vector<int>> m, int n, vector<string> &p
 
     // backtrack
     visited[i][j] == false;
-    return;
 }
 
 // driver function

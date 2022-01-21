@@ -1,5 +1,4 @@
-// backtracking hard
-
+// backtracking (hard)
 #include <bits/stdc++.h>
 #define MAX 5
 using namespace std;
@@ -36,6 +35,8 @@ void printPathUtil(int row, int col, int m[][MAX], int n, string &path, vector<s
 
     if (isSafe(row + 1, col, m, n, visited))
     {
+        cout << "D" << endl;
+
         path.push_back('D');
         printPathUtil(row + 1, col, m, n,
                       path, possiblePaths, visited);
@@ -44,6 +45,8 @@ void printPathUtil(int row, int col, int m[][MAX], int n, string &path, vector<s
 
     if (isSafe(row, col - 1, m, n, visited))
     {
+        cout << "L" << endl;
+
         path.push_back('L');
         printPathUtil(row, col - 1, m, n,
                       path, possiblePaths, visited);
@@ -52,6 +55,8 @@ void printPathUtil(int row, int col, int m[][MAX], int n, string &path, vector<s
 
     if (isSafe(row, col + 1, m, n, visited))
     {
+        cout << "R" << endl;
+
         path.push_back('R');
         printPathUtil(row, col + 1, m, n,
                       path, possiblePaths, visited);
@@ -60,6 +65,8 @@ void printPathUtil(int row, int col, int m[][MAX], int n, string &path, vector<s
 
     if (isSafe(row - 1, col, m, n, visited))
     {
+        cout << "U" << endl;
+
         path.push_back('U');
         printPathUtil(row - 1, col, m, n,
                       path, possiblePaths, visited);
