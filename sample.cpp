@@ -1,106 +1,101 @@
-#include <stdio.h>
+// backtracking hard
 
-// Maze size
-#define N 4
+#include <bits/stdc++.h>
+#define MAX 5
+using namespace std;
 
-bool solveMazeUtil(
-    int maze[N][N], int x,
-    int y, int sol[N][N]);
-
-/* A utility function to print
-solution matrix sol[N][N] */
-void printSolution(int sol[N][N])
+// function to tell if current cell is placable
+bool isSafe(int row, int col, int m[][MAX],
+            int n, bool visited[][MAX])
 {
-    for (int i = 0; i < N; i++)
+    if (row < 0 || row == n || col < 0 ||
+        col == n || visited[row][col] || m[row][col] == 0)
     {
-        for (int j = 0; j < N; j++)
-            printf(" %d ", sol[i][j]);
-        printf("\n");
-    }
-}
-
-bool isSafe(int maze[N][N], int x, int y)
-{
-    // if (x, y outside maze) return false
-    if (
-        x >= 0 && x < N && y >= 0 && y < N && maze[x][y] == 1)
-        return true;
-
-    return false;
-}
-
-bool solveMaze(int maze[N][N])
-{
-    int sol[N][N] = {{0, 0, 0, 0},
-                     {0, 0, 0, 0},
-                     {0, 0, 0, 0},
-                     {0, 0, 0, 0}};
-
-    if (solveMazeUtil(
-            maze, 0, 0, sol) == false)
-    {
-        printf("Solution doesn't exist");
         return false;
     }
 
-    printSolution(sol);
     return true;
 }
 
-/* A recursive utility function
-to solve Maze problem */
-bool solveMazeUtil(
-    int maze[N][N], int x,
-    int y, int sol[N][N])
+// utility function
+void printPathUtil(int row, int col, int m[][MAX], int n, string &path, vector<string> &possiblePaths, bool visited[][MAX])
 {
-    // if (x, y is goal) return true
-    if (
-        x == N - 1 && y == N - 1 && maze[x][y] == 1)
+
+    if (row == -1 || row == n || col == -1 || col == n || visited[row][col] || m[row][col] == 0)
     {
-        sol[x][y] = 1;
-        return true;
+        return;
     }
 
-    // Check if maze[x][y] is valid
-    if (isSafe(maze, x, y) == true)
+    if (row == n - 1 && col == n - 1)
     {
-        // Check if the current block is already part of solution path.
-        if (sol[x][y] == 1)
-            return false;
-
-        // mark x, y as part of solution path
-        sol[x][y] = 1;
-
-        /* Move forward in x direction */
-        if (solveMazeUtil(
-                maze, x + 1, y, sol) == true)
-            return true;
-
-        /* If moving in x direction
-		doesn't give solution then
-		Move down in y direction */
-        if (solveMazeUtil(
-                maze, x, y + 1, sol) == true)
-            return true;
-
-        /* If none of the above movements
-		work then BACKTRACK: unmark
-		x, y as part of solution path */
-        sol[x][y] = 0;
-        return false;
+        possiblePaths.push_back(path);
+        return;
     }
 
-    return false;
+    visited[row][col] = true;
+
+    if (isSafe(row + 1, col, m, n, visited))
+    {
+        path.push_back('D');
+        printPathUtil(row + 1, col, m, n,
+                      path, possiblePaths, visited);
+        path.pop_back();
+    }
+
+    if (isSafe(row, col - 1, m, n, visited))
+    {
+        path.push_back('L');
+        printPathUtil(row, col - 1, m, n,
+                      path, possiblePaths, visited);
+        path.pop_back();
+    }
+
+    if (isSafe(row, col + 1, m, n, visited))
+    {
+        path.push_back('R');
+        printPathUtil(row, col + 1, m, n,
+                      path, possiblePaths, visited);
+        path.pop_back();
+    }
+
+    if (isSafe(row - 1, col, m, n, visited))
+    {
+        path.push_back('U');
+        printPathUtil(row - 1, col, m, n,
+                      path, possiblePaths, visited);
+        path.pop_back();
+    }
+
+    visited[row][col] = false;
 }
 
-// driver program to test above function
+// Head function
+void printPath(int m[MAX][MAX], int n)
+{
+
+    vector<string> possiblePaths;
+    string path;
+    bool visited[n][MAX];
+    memset(visited, false, sizeof(visited));
+
+    printPathUtil(0, 0, m, n, path,
+                  possiblePaths, visited);
+
+    for (int i = 0; i < possiblePaths.size(); i++)
+        cout << possiblePaths[i] << " ";
+}
+
+// mainFunction
 int main()
 {
-    int maze[N][N] = {{1, 0, 0, 0},
-                      {1, 1, 0, 1},
-                      {0, 1, 0, 0},
-                      {1, 1, 1, 1}};
+    int m[MAX][MAX] = {{1, 0, 0, 0, 0},
+                       {1, 1, 1, 1, 1},
+                       {1, 1, 1, 0, 1},
+                       {0, 0, 0, 0, 1},
+                       {0, 0, 0, 0, 1}};
 
-    solveMaze(maze);
+    int n = sizeof(m) / sizeof(m[0]);
+    printPath(m, n);
+
     return 0;
 }
