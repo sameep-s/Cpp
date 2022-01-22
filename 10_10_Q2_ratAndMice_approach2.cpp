@@ -1,112 +1,80 @@
-#include <bits/stdc++.h>
+#include <iostream>
 #include <vector>
 using namespace std;
 
-#define M 5
-
-bool isSafe(int i, int j, int n, vector<vector<int>> m, bool visited[][M])
+// function for printing the vector
+void print2DVector(vector<vector<int>> mat)
 {
-    // the condition
-    if (i < 0 || i == n || i < 0 || j == n || visited[i][j] || m[i][j] == 0)
-    {
-        return false;
-    }
+    int x = mat.size();
+    int y = mat[1].size();
 
-    return true;
+    for (int i = 0; i < x; i++)
+    {
+        for (int j = 0; j < y; j++)
+        {
+            cout << mat[i][j] << " ";
+        }
+        cout << endl;
+    }
 }
 
-// utilityFunction
-void printPathUtil(int i, int j, vector<vector<int>> m, int n, vector<string> &possiblePaths, string &path, bool visited[M][M])
+void ratAndMice(vector<string> s, vector<vector<int>> v, int i, int j, int n, int m)
 {
-    // base case
-    if (i == n || j == n || i == -1 || j == -1 || visited[i][j] || m[i][j] == 0)
+    // baseCase
+    if (i == n && j == m)
     {
+        print2DVector(v);
         return;
     }
 
-    if (i == n - 1 && j == n - 1)
-    {
-        possiblePaths.push_back(path);
-        return;
-    }
-
-    // rec case
-    visited[i][j] == true;
-
+    // recursiveCase(s)
     // down
-    if (isSafe(i + 1, j, n, m, visited))
+    if (i != n && s[i + 1][j] != 'X' && v[i + 1][j] != 1)
     {
-        cout << "D" << endl;
-
-        path.push_back('D');
-        printPathUtil(i + 1, j, m, n, possiblePaths, path, visited);
-        path.pop_back();
+        v[i + 1][j] = 1;
+        ratAndMice(s, v, i + 1, j, n, m);
+        v[i + 1][j] = 0;
     }
 
     // left
-
-    if (isSafe(i, j - 1, n, m, visited))
+    if (j > 0 && s[i][j - 1] != 'X' && v[i][j - 1] != 1)
     {
-        cout << "L" << endl;
-
-        path.push_back('L');
-        printPathUtil(i, j - 1, m, n, possiblePaths, path, visited);
-        path.pop_back();
+        v[i][j - 1] = 1;
+        ratAndMice(s, v, i, j - 1, n, m);
+        v[i][j - 1] = 0;
     }
     // right
-
-    if (isSafe(i, j + 1, n, m, visited))
+    if (j != m && s[i][j + 1] != 'X' && v[i][j + 1] != 1)
     {
-        cout << "R" << endl;
-
-        path.push_back('R');
-        printPathUtil(i, j + 1, m, n, possiblePaths, path, visited);
-        path.pop_back();
+        v[i][j + 1] = 1;
+        ratAndMice(s, v, i, j + 1, n, m);
+        v[i][j + 1] = 0;
     }
+
     // up
-
-    if (isSafe(i - 1, j, n, m, visited))
+    if (i > 0 && s[i - 1][j] != 'X' && v[i - 1][j] != 1)
     {
-        cout << "U" << endl;
-
-        path.push_back('U');
-        printPathUtil(i - 1, j, m, n, possiblePaths, path, visited);
-        path.pop_back();
+        v[i - 1][j] = 1;
+        ratAndMice(s, v, i - 1, j, n, m);
+        v[i - 1][j] = 0;
     }
 
-    // backtrack
-    visited[i][j] == false;
-}
-
-// driver function
-void printPath(vector<vector<int>> m)
-{
-    int n = m.size();
-
-    vector<string> possiblePaths;
-    string path;
-    bool visited[M][M];
-
-    memset(visited, false, sizeof(visited));
-
-    printPathUtil(0, 0, m, n, possiblePaths, path, visited);
-
-    for (int i = 0; i < possiblePaths.size(); i++)
-    {
-        cout << possiblePaths[i] << " ";
-    }
+    // end
+    return;
 }
 
 int main()
 {
+    vector<string> s = {"OXOO", "OOOX", "XOXO", "XOOX", "XXOO"};
 
-    vector<vector<int>> m = {{1, 0, 0, 0, 0},
-                             {1, 1, 1, 1, 1},
-                             {1, 1, 1, 0, 1},
-                             {0, 0, 0, 0, 1},
-                             {0, 0, 0, 0, 1}};
+    int n = s.size();
+    int m = s[0].size();
 
-    printPath(m);
+    // this creates a (nxm) matrix and fills it with 0's.
+    vector<vector<int>> v(n, vector<int>(m, 0));
+    v[0][0] = 1;
+
+    ratAndMice(s, v, 0, 0, n - 1, m - 1);
 
     return 0;
 }

@@ -43,8 +43,8 @@ void ratAndMice(vector<vector<string>> &mat, vector<vector<int>> &sol, int i, in
         return;
     }
 
-    //baseCase
-    if (i == x or j == y)
+    // baseCase
+    if (i == y or j == x)
     {
         // print the solution
         // print2DVector(sol);

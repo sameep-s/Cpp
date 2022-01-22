@@ -104,6 +104,15 @@ int main()
 
     int n = sizeof(m) / sizeof(m[0]);
     printPath(m, n);
+    cout << "n:  --->  " << n << endl;
 
     return 0;
 }
+
+/**
+ *
+left: 50%;
+transform: translate(-50%, 0px)
+
+ *
+ */
