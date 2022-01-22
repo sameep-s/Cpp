@@ -35,8 +35,8 @@ bool isSafe(vector<vector<string>> mat, int x, int y)
 
 void ratAndMice(vector<vector<string>> &mat, vector<vector<int>> &sol, int i, int j)
 {
-    int x = sol[1].size();
-    int y = sol.size();
+    int x = sol[1].size() - 1;
+    int y = sol.size() - 1;
 
     if (i == -1, j == -1, i == x, j == y)
     {
